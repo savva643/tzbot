@@ -60,7 +60,7 @@ async def handle_start(message: Message, session):
 
 # помощь команда
 async def handle_help(message: Message):
-    await message.answer("Доступные команды: /pay, /paytest, /buy, /llama, /gpt, /gemini. После оплаты пиши текст и получишь ответ.")
+    await message.answer("Доступные команды: /pay, /paytest, /llama, /gpt, /gemini. После оплаты пиши текст и получишь ответ.")
 
 
 
@@ -147,6 +147,8 @@ async def handle_successful_payment(message: Message, session):
 # текст для отправки в ии
 async def handle_text(message: Message, session):
     user = await get_or_create_user(session, message.from_user.id, settings.default_model)
+    if message.text.startswith("/"):
+        return
     if not user.has_access:
         await message.answer(f"Нужна оплата. Используй /pay ({settings.pay_amount}⭐).")
         return
